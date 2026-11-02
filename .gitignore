@@ -1,0 +1,29 @@
+# Java / Maven
+target/
+.m2/
+*.class
+*.jar
+*.war
+hs_err_pid*
+
+# Node / Vite
+node_modules/
+dist/
+*.local
+*.tsbuildinfo
+npm-debug.log*
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# IDEs and OS
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+.DS_Store
+Thumbs.db
