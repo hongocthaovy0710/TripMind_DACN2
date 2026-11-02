@@ -1,89 +1,75 @@
-# AI Travel Planner
+# AI Travel Planner – User Website
 
-Website hỗ trợ lập kế hoạch du lịch bằng AI. Đây là bộ khung ban đầu cho đồ án tốt nghiệp của nhóm hai thành viên; các chức năng nghiệp vụ và tích hợp AI sẽ được thống nhất, triển khai sau.
+Repository dành riêng cho khách du lịch, gồm giao diện User và API phục vụ người dùng. Repository kết nối PostgreSQL và có thể tích hợp API AI, bản đồ cùng dịch vụ du lịch bên ngoài khi nhóm thống nhất nhà cung cấp.
 
-## Mục tiêu
-
-- Tạo nền tảng web để người dùng khám phá địa điểm và lập kế hoạch chuyến đi.
-- Tổ chức backend theo MVC và layered architecture, tách frontend người dùng và quản trị.
-- Tích hợp API AI có sẵn sau khi nhóm chọn nhà cung cấp; dự án không huấn luyện mô hình AI.
+Đây là bộ khung ban đầu: chưa triển khai nghiệp vụ đăng ký/đăng nhập, tìm kiếm, lịch trình, chuyến đi, yêu thích hay hồ sơ; chưa tạo schema nghiệp vụ và không chứa giao diện quản trị.
 
 ## Công nghệ
 
-- Backend: Java 17, Spring Boot, Spring Web, Spring Data JPA, Spring Security, Validation, Lombok, PostgreSQL.
-- Frontend User/Admin: React, TypeScript, Vite, React Router DOM, Axios.
-- Quản lý mã nguồn: Git và GitHub.
+- Backend: Java 17, Spring Boot, Spring Web, Spring Data JPA, Spring Security, Validation, Lombok, PostgreSQL Driver.
+- Frontend: React, TypeScript, Vite, React Router DOM, Axios.
+- Version control: Git và GitHub.
 
 ## Cấu trúc
 
 ```text
-backend/          Spring Boot REST API
-frontend-user/    Ứng dụng React cho người dùng
-frontend-admin/   Ứng dụng React quản trị độc lập
-docs/             Tài liệu dự án và thiết kế
-.env.example      Mẫu biến môi trường dùng chung cho backend
+backend/          Spring Boot API cho người dùng
+frontend-user/    Website React dành cho khách du lịch
+docs/             Tổng quan, kiến trúc, database và API
+.env.example      Mẫu biến môi trường cho backend
 ```
+
+Backend dùng package gốc `com.travelplanner.user`. Các package `integration/ai`, `integration/maps` và `integration/travel` để dành cho tích hợp bên ngoài. Schema database sẽ được thống nhất trước khi tạo entity.
 
 ## Yêu cầu môi trường
 
-- JDK 17 trở lên, Maven 3.9 trở lên.
+- JDK 17 trở lên và Maven 3.9 trở lên.
 - Node.js 20 trở lên và npm.
-- PostgreSQL 14 trở lên (hoặc phiên bản tương thích).
+- PostgreSQL 14 trở lên.
 
-## Clone và cấu hình
+## Clone repository
 
 ```bash
 git clone <URL-repository>
-cd TripMind_DACN2
+cd AI-TRAVEL-PLANNER-USER
 ```
 
-Tạo database rỗng trong PostgreSQL (ví dụ `travel_planner`). Sao chép `.env.example` thành `.env`, rồi đặt `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` theo máy của bạn. Không commit `.env` hay API key lên GitHub. Spring Boot không tự nạp file `.env`; hãy export các biến môi trường trong terminal hoặc cấu hình chúng trong IDE trước khi chạy backend.
+## Cấu hình PostgreSQL và môi trường
+
+Tạo database PostgreSQL rỗng, ví dụ `travel_planner_user`. Sao chép `.env.example` thành `.env` và thay giá trị theo máy. Spring Boot không tự đọc file `.env`; hãy export các biến trong terminal hoặc cấu hình chúng trong IDE. Không commit `.env`, mật khẩu hay API key.
 
 PowerShell:
 
 ```powershell
-$env:DB_URL="jdbc:postgresql://localhost:5432/travel_planner"
+$env:DB_URL="jdbc:postgresql://localhost:5432/travel_planner_user"
 $env:DB_USERNAME="postgres"
 $env:DB_PASSWORD="your-local-password"
 ```
 
 ## Chạy Backend
 
-Từ thư mục `backend`:
-
 ```bash
+cd backend
 mvn spring-boot:run
 ```
 
-Backend mặc định chạy tại `http://localhost:8080`; kiểm tra `GET http://localhost:8080/api/health`. Nếu chưa cấu hình PostgreSQL, ứng dụng không thể khởi động do JPA cần kết nối cơ sở dữ liệu.
+API mặc định chạy tại `http://localhost:8080`. Health check: `GET http://localhost:8080/api/health`. Cần PostgreSQL đang chạy và các biến môi trường đã được thiết lập. JPA không tự tạo schema (`ddl-auto=none`).
 
 ## Chạy Frontend User
 
 ```bash
 cd frontend-user
 npm install
-```
-
-Sao chép `.env.example` thành `.env.local` nếu cần thay URL backend (mặc định `http://localhost:8080`), sau đó:
-
-```bash
 npm run dev
 ```
 
-## Chạy Frontend Admin
+Để đổi backend URL, sao chép `frontend-user/.env.example` thành `.env.local` và đặt `VITE_API_BASE_URL` (mặc định `http://localhost:8080`).
+
+Build production:
 
 ```bash
-cd frontend-admin
-npm install
+npm run build
 ```
-
-Sao chép `.env.example` thành `.env.local` nếu cần thay URL backend (mặc định `http://localhost:8080`), sau đó:
-
-```bash
-npm run dev
-```
-
-Frontend User và Admin là hai ứng dụng Vite độc lập. Mỗi ứng dụng có thể chạy ở cổng khác nhau; Vite sẽ thông báo URL nếu cổng mặc định đang bận.
 
 ## Làm việc nhóm với Git
 
@@ -94,8 +80,8 @@ git commit -m "feat: mo ta thay doi"
 git push -u origin feat/ten-cong-viec
 ```
 
-Tạo Pull Request để thành viên còn lại review trước khi merge vào nhánh chính. Thống nhất quy ước nhánh và phân chia backend/frontend trong nhóm; không commit file môi trường, mật khẩu, token hoặc API key.
+Tạo Pull Request để thành viên còn lại review trước khi merge. Thống nhất phân chia backend/frontend và quy ước nhánh trong nhóm. Không commit file môi trường, mật khẩu, token hoặc API key.
 
 ## Tài liệu
 
-Xem [docs/](docs/) để bổ sung tổng quan, kiến trúc, thiết kế cơ sở dữ liệu và tài liệu API.
+Các tài liệu khởi đầu ở [docs/](docs/): tổng quan dự án, kiến trúc, thiết kế database và API. Nhóm bổ sung nội dung sau khi yêu cầu được thống nhất.

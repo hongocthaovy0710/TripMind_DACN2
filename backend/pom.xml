@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.travelplanner</groupId>
-    <artifactId>travel-planner</artifactId>
+    <artifactId>travel-planner-user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>travel-planner</name>
-    <description>AI Travel Planner backend</description>
+    <name>travel-planner-user</name>
+    <description>AI Travel Planner User backend</description>
     <properties>
         <java.version>17</java.version>
     </properties>

@@ -1,5 +1,11 @@
-# Backend
+# Backend User
 
-Spring Boot REST API dùng Java 17 và Maven. Cấu hình PostgreSQL qua `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`; xem `.env.example` ở thư mục gốc. Spring Security hiện chỉ dùng cấu hình mặc định của Spring Boot, chưa có đăng nhập/JWT/phân quyền nghiệp vụ.
+Spring Boot REST API cho website khách du lịch, dùng Java 17, Maven và package gốc `com.travelplanner.user`. Các dependency nền tảng gồm Spring Web, Data JPA, Security, Validation, PostgreSQL Driver và Lombok.
 
-Chạy từ thư mục này bằng `mvn spring-boot:run`. Health check: `GET /api/health`.
+Cấu hình `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` bằng biến môi trường trước khi chạy. Mẫu nằm tại `.env.example` ở thư mục gốc; Spring Boot không tự nạp `.env`. Schema chưa được khởi tạo và `spring.jpa.hibernate.ddl-auto=none`.
+
+```bash
+mvn spring-boot:run
+```
+
+Health check: `GET /api/health`. Chưa có nghiệp vụ đăng nhập, JWT, phân quyền, hay API du lịch/AI thực tế.
